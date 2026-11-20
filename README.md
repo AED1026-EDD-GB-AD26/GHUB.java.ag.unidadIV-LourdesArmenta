@@ -33,7 +33,7 @@ classDiagram
     }
 
     class ArbolBinarioBusqueda {
-        -raiz: Nodo
+        #raiz: Nodo
         +ArbolBinarioBusqueda()
         +ArbolBinarioBusqueda(Nodo)
         +getRaiz() Nodo
@@ -53,6 +53,9 @@ classDiagram
         -insertarRec(Nodo, Comparable) Nodo
         -localizar(Nodo, Comparable) Nodo
         -reemplazarPorMayorIzquierdo(Nodo) void
+        -preorden(Nodo) void
+        -inorden(Nodo) void
+        -postorden(Nodo) void
         -visitar(Nodo) void
     }
 
@@ -82,7 +85,6 @@ classDiagram
     }
 
     class ArbolBinario {
-        <<abstract>>
         #raiz: Nodo
         +ArbolBinario()
         +ArbolBinario(Nodo)
@@ -91,18 +93,22 @@ classDiagram
         +preorden() void
         +inorden() void
         +postorden() void
-        #preorden(Nodo) void
-        #inorden(Nodo) void
-        #postorden(Nodo) void
-        #visitar(Nodo) void
+        +preordenIterativo() void
+        +inordenIterativo() void
+        +postordenIterativo() void
+        +recorridoPorNiveles() void
+        -preorden(Nodo) void
+        -inorden(Nodo) void
+        -postorden(Nodo) void
+        -visitar(Nodo) void
     }
 
     Nodo --> Nodo : referencia
+    ArbolBinario --> Nodo : utiliza
     ArbolBinarioBusqueda --> Nodo : utiliza
     ArbolBinarioBusqueda --> Comparable : utiliza
     Comparable <|.. Entero : implementa
     Comparable <|.. Estudiante : implementa
-    ArbolBinario <|-- ArbolBinarioBusqueda : extiende
 ```
 
 [Referencia-Mermaid](https://mermaid.js.org/syntax/classDiagram.html)
