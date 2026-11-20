@@ -62,12 +62,6 @@ public class ArbolBinarioBusqueda {
     /*
     esta es la interfaz de la operación, llama al método
     insertarRecursivo que realiza la operacion y devuelve la raiz del nuevo
-
-
-
-
-
-
      */
     public void insertar2(Object valor) throws Exception{
        Comparable dato = (Comparable) valor;
@@ -127,12 +121,98 @@ public class ArbolBinarioBusqueda {
     interfaz de buscar que invoca al método recursivo
      */
     public Nodo buscar2(Object valor){
+        Comparable dato = (Comparable)valor;
+        if (raiz ==null){
+            return null;
+        }else{
+            return localizar(raiz,dato);
+        }
+
+    }
+    /*
+    implementacion iterativa para eliminar el nodo de un árbol
+     */
+    public boolean eliminar(Object valor){
+        Comparable dato = (Comparable) valor;
+        //buscar el nodo eliminar y su antecesor
+        Nodo antecesor = null; //antecesor del nodo a eliminar
+        //aux: auxiliar que va recorriendo los nodos,desde la raiz
+        Nodo aux = raiz;
+        while (aux !=null){
+            if(dato.esIgual(aux.getValor())){
+                break;
+            }
+            antecesor = aux;
+            if(dato.esMenor(aux.getValor())){
+                aux = aux.getIzquierdo();
+            }else{
+                aux = aux.getDerecho();
+            }
+        }
+        if (aux==null){
+            return false;
+        }
+        //si llega a este punto, el nodo a eliminar existe y esta en aux y
+        //su antercesor es antecesor
+        //Examinar cada caso:
+        //1.- Si tiene menos de dos hijos, incluso una hoja, reajustar los enlaces
+        if(aux.getIzquierdo()==null)
+            //cuando llego aquí ya se que NO TIENE DOS HIJOS
+            if (((Comparable) aux.getValor()).esMenor(antecesor.getValor()))
+                antecesor.setIzquierdo(aux.getIzquierdo());
+            else
+                antecesor.setDerecho(aux.getIzquierdo());
+            else if(aux.getDerecho()==null)
+                if (((Comparable) aux.getValor()).esMenor(antecesor.getValor()))
+                    antecesor.setIzquierdo(aux.getIzquierdo());
+                else 
+                    antecesor.setDerecho(aux.getIzquierdo());
+            else 
+                //el nodo a eliminar tiene rama izquierda y rama derecha
+            reemplazarPorMayorIzquierdo(aux);
+            aux = null;
+            return true;
+    }
+    /*
+    Reemplazar el nodo actual, por el mayor de la rama izquierda
+     */
+    private void reemplazarPorMayorIzquierdo(Nodo act){
+        Nodo mayor = act;
+        Nodo ant = act;
+        mayor = act.getIzquierdo();
+        //buscar el mayor de la rama izquiera
+        //ant:es el antecesor de mayor
+        while(mayor.getDerecho() !=null){
+            act = mayor;
+            mayor = mayor.getDerecho();
+        }
+        //cuando llego ya encontre el mayor
+        act.setValor(mayor.getValor());//reemplazo
+        //reajuste
+        if(ant==act){
+            ant.setIzquierdo(mayor.getIzquierdo());
+        }else{
+            ant.setDerecho(mayor.getIzquierdo());
+        }
 
     }
     /*
     método recursivo
      */
     private Nodo localizar(Nodo raizSub, Comparable buscado){
+        //caso base
+        if(raizSub == null){
+            return null;
+        }else{
+            if(buscado.esIgual(raizSub.getValor())){
+                return raizSub;
+            }else if(buscado.esMenor(raizSub.getValor())){
+                return localizar(raizSub.getIzquierdo(), buscado);
+            }else{
+                return localizar(raizSub.getDerecho(),buscado);
+            }
+        }
+
 
     }
     /*
