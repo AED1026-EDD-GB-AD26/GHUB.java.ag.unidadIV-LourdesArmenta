@@ -3,21 +3,108 @@ Este es un cambio
 
 Plantilla básica para proyecto de Java con Autograding
 
-## Diagrama de clases
+## Diagrama de clases - Árbol Binario de Búsqueda
 [Editor en línea](https://mermaid.live/)
+
 ```mermaid
 ---
-title: Clase
+title: Árbol Binario de Búsqueda
 ---
 classDiagram
-      class Clase
-      Clase: -x
-      Clase: -y
-      Clase: +op1()
-      Clase: +op2()
-      Clase: +op3()
-      Clase: +op4()
+    class Comparable {
+        <<interface>>
+        +esMenor(Object) boolean
+        +esIgual(Object) boolean
+        +esMayor(Object) boolean
+    }
+
+    class Nodo {
+        -valor: Object
+        -izquierdo: Nodo
+        -derecho: Nodo
+        +Nodo()
+        +Nodo(Object)
+        +getValor() Object
+        +setValor(Object) void
+        +getIzquierdo() Nodo
+        +setIzquierdo(Nodo) void
+        +getDerecho() Nodo
+        +setDerecho(Nodo) void
+    }
+
+    class ArbolBinarioBusqueda {
+        -raiz: Nodo
+        +ArbolBinarioBusqueda()
+        +ArbolBinarioBusqueda(Nodo)
+        +getRaiz() Nodo
+        +setRaiz(Nodo) void
+        +insertar(Object) void
+        +insertar2(Object) void
+        +buscar(Object) Nodo
+        +buscar2(Object) Nodo
+        +eliminar(Object) boolean
+        +preorden() void
+        +inorden() void
+        +postorden() void
+        +preordenIterativo() void
+        +inordenIterativo() void
+        +postordenIterativo() void
+        +recorridoPorNiveles() void
+        -insertarRec(Nodo, Comparable) Nodo
+        -localizar(Nodo, Comparable) Nodo
+        -reemplazarPorMayorIzquierdo(Nodo) void
+        -visitar(Nodo) void
+    }
+
+    class Entero {
+        -dato: int
+        +Entero(int)
+        +getDato() int
+        +setDato(int) void
+        +toString() String
+        +esIgual(Object) boolean
+        +esMayor(Object) boolean
+        +esMenor(Object) boolean
+    }
+
+    class Estudiante {
+        -codigo: int
+        -nombre: String
+        +Estudiante(int, String)
+        +getCodigo() int
+        +getNombre() String
+        +setCodigo(int) void
+        +setNombre(String) void
+        +toString() String
+        +esIgual(Object) boolean
+        +esMayor(Object) boolean
+        +esMenor(Object) boolean
+    }
+
+    class ArbolBinario {
+        <<abstract>>
+        #raiz: Nodo
+        +ArbolBinario()
+        +ArbolBinario(Nodo)
+        +getRaiz() Nodo
+        +setRaiz(Nodo) void
+        +preorden() void
+        +inorden() void
+        +postorden() void
+        #preorden(Nodo) void
+        #inorden(Nodo) void
+        #postorden(Nodo) void
+        #visitar(Nodo) void
+    }
+
+    Nodo --> Nodo : referencia
+    ArbolBinarioBusqueda --> Nodo : utiliza
+    ArbolBinarioBusqueda --> Comparable : utiliza
+    Comparable <|.. Entero : implementa
+    Comparable <|.. Estudiante : implementa
+    ArbolBinario <|-- ArbolBinarioBusqueda : extiende
 ```
+
 [Referencia-Mermaid](https://mermaid.js.org/syntax/classDiagram.html)
 
 ## Diagrama de clases UML con draw.io
