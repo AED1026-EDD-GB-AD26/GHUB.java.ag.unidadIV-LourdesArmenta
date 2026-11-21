@@ -177,13 +177,16 @@ public class ArbolBinarioBusqueda {
         // 2.- Si tiene menos de dos hijos, incluso una hoja, reajustar los enlaces
         if (aux.getIzquierdo() == null) {
             // cuando llego aquí ya se que NO TIENE DOS HIJOS
-            if (((Comparable) aux.getValor()).esMenor(antecesor.getValor())) {
+            // Version anterior: if (((Comparable) aux.getValor()).esMenor(antecesor.getValor())) {
+            // Compara los nodos directamente para saber que enlace actualizar.
+            if (antecesor.getIzquierdo() == aux) {
                 antecesor.setIzquierdo(aux.getDerecho());
             } else {
                 antecesor.setDerecho(aux.getDerecho());
             }
         } else if (aux.getDerecho() == null) {
-            if (((Comparable) aux.getValor()).esMenor(antecesor.getValor())) {
+            // Version anterior: if (((Comparable) aux.getValor()).esMenor(antecesor.getValor())) {
+            if (antecesor.getIzquierdo() == aux) {
                 antecesor.setIzquierdo(aux.getIzquierdo());
             } else {
                 antecesor.setDerecho(aux.getIzquierdo());
