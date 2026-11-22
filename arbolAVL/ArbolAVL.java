@@ -158,12 +158,10 @@ import cola.Cola;
 		 * @param aux
 		 */
 		private String preorden2(Nodo aux,String cadena) {
-			//String cadena = "";
 			if(aux !=null) {
 				cadena=cadena+visitar2(aux);
-				System.out.println("En la funcion preorden2 recursiva: "+cadena);
-				preorden2(aux.getIzquierdo(),cadena);
-				preorden2(aux.getDerecho(),cadena);
+				cadena=preorden2(aux.getIzquierdo(),cadena);
+				cadena=preorden2(aux.getDerecho(),cadena);
 			}
 			return cadena;
 		}
@@ -212,52 +210,15 @@ import cola.Cola;
 	
 	
 	/**
-	 * Inserta un nodo en el árbol binario version Iterativa
-	 * @param valor
-	 * @throws Exception
-	 * Pendiente de modificar
-	 */
-	
-	public void insertar2(Object valor) throws Exception{
-		Comparable dato = (Comparable) valor;
-		Nodo nuevo = new Nodo();
-		nuevo.setValor(dato);
-		
-		if(raiz==null)
-			raiz=nuevo;
-		else {
-			//anterior: referencia al padre de aux
-			Nodo anterior = null;
-			//aux: auxiliar para recorrer los nodos, desde la raiz
-			Nodo aux = raiz;
-			while (aux!=null) {
-				anterior = aux;
-				if(dato.esMenor(aux.getValor()))
-					aux = aux.getIzquierdo();
-				else if (dato.esMayor(aux.getValor()))
-					aux = aux.getDerecho();
-				else
-					throw new Exception("Dato duplicado");
-				
-			}
-			if(dato.esMenor(anterior.getValor()))
-				anterior.setIzquierdo(nuevo);
-			else
-				anterior.setDerecho(nuevo);
-			
-			
-		}
-		
-		
-	}
-	/**
 	 * versión recursiva
-	 * Inserta un elemento en el arvol AVL, llama al método
+	 * Inserta un elemento en el árbol AVL y llama al método
 	 * recursivo insertarAVL
 	 * @param valor a insertar
 	 * @throws Exception
 	 */
 	public void insertar(Object valor) throws Exception{
+		if (!(valor instanceof Comparable))
+			throw new Exception("El valor debe implementar arbolAVL.Comparable");
 		Comparable dato = (Comparable) valor;
 		Logical h = new Logical(false);//intercambio un valor booleano
 		raiz = insertarAVL(raiz,dato,h);
@@ -339,6 +300,8 @@ import cola.Cola;
 	 * @return Nodo buscado o Null si no lo encuentra
 	 */
 	public Nodo buscar(Object valor) {
+		if (!(valor instanceof Comparable))
+			return null;
 		Comparable dato = (Comparable)valor;
 		if(raiz ==null)
 			return raiz;
@@ -364,6 +327,8 @@ import cola.Cola;
 	 * @return Nodo si lo encuentra y si no Null
 	 */
 	public Nodo buscar2(Object buscado) {
+		if (!(buscado instanceof Comparable))
+			return null;
 		Comparable dato = (Comparable)buscado;
 		if (raiz ==null)
 			return null;
@@ -387,181 +352,107 @@ import cola.Cola;
 	 * @throws Exception
 	 */
 	public void eliminar(Object valor) throws Exception{
+		if (!(valor instanceof Comparable))
+			throw new Exception("El valor debe implementar arbolAVL.Comparable");
 		Comparable dato;
 		dato = (Comparable) valor;
 		Logical flag = new Logical(false);
-		raiz = borrarAVL(raiz,dato,flag);
+		raiz = eliminarAVL(raiz,dato,flag);
 		
 	}
 	/**
-	 * 
-	 * @param r Nodo raiz
-	 * @param clave elemento a borrar
-	 * @param cambioAltura tipo Logical
-	 * @return 
+	 * Elimina un nodo y rebalancea la rama AVL.
+	 * @param r raiz de la subrama
+	 * @param clave elemento a eliminar
+	 * @param cambioAltura indica si debe propagarse el cambio de altura
+	 * @return raiz actualizada de la subrama
 	 * @throws Exception
 	 */
 	
-	public Nodo borrarAVL(Nodo r, Comparable clave, Logical cambioAltura) 
+	public Nodo eliminarAVL(Nodo r, Comparable clave, Logical cambioAltura)
 			throws Exception{
 		if(r==null) {
 			throw new Exception("Nodo no encontrado");
 		}
 		else if(clave.esMenor(r.getValor())) {
-			Nodo iz;
-			iz = borrarAVL((Nodo)r.getIzquierdo(),clave,cambioAltura);
+			Nodo iz = eliminarAVL(r.getIzquierdo(),clave,cambioAltura);
 			r.setIzquierdo(iz);
-			if(cambioAltura.booleanValue())
-					r=equilibrar1(r,cambioAltura);
-			
 		}
 		else if(clave.esMayor(r.getValor())) {
-			Nodo dr;
-			dr = borrarAVL((Nodo)r.getDerecho(),clave,cambioAltura);
+			Nodo dr = eliminarAVL(r.getDerecho(),clave,cambioAltura);
 			r.setDerecho(dr);
-			if(cambioAltura.booleanValue())
-					r=equilibrar2(r,cambioAltura);
-			
 		}
 		else //Nodo encontrado
 		{
-			Nodo q;
-			q=r; //Nodo a quitar del arbol
-			if(q.getIzquierdo()==null) {
-				r=(Nodo) q.getDerecho();
+			if(r.getIzquierdo()==null) {
+				r=r.getDerecho();
 				cambioAltura.setLogical(true);
 			}
-			else if(q.getDerecho()==null) {
-				r=(Nodo) q.getIzquierdo();
+			else if(r.getDerecho()==null) {
+				r=r.getIzquierdo();
 				cambioAltura.setLogical(true);
-			
 			}
 			else {
-				//Tiene rama izquierda y rama derecha
-				
-				Nodo iz=null;
-				
-				
-				//if (((Nodo)r.getIzquierdo()).getDerecho()!=null) {
-					
-					
-				   iz = reemplazar(r,(Nodo)r.getIzquierdo(), cambioAltura);
-				   
-				  
-				//}
-				
-					
-				//System.out.println("Ya encontre el reemplazo"+iz.getValor());
-				r.setIzquierdo(iz);
-				if(cambioAltura.booleanValue())
-					r=equilibrar1(r,cambioAltura);
+				Nodo sucesor = r.getDerecho();
+				while(sucesor.getIzquierdo()!=null)
+					sucesor=sucesor.getIzquierdo();
+				r.setValor(sucesor.getValor());
+				r.setDerecho(eliminarAVL(r.getDerecho(),sucesor.getValor(),cambioAltura));
 			}
-			q=null;
 		}
-		return r;
+		return r==null ? null : rebalancearAVL(r,cambioAltura);
 	}
 		
-	/**
-	 * Reemplaza el nodo a eliminar por el nodo mas a la izquierda
-	 * del hijo derecho
-	 * @param n nodo a reemplazar
-	 * @param act dato a actualizar
-	 * @param cambioAltura
-	 * @return
-	 */
-	
-	private Nodo reemplazar(Nodo n, Nodo act,Logical cambioAltura)  {
-		
-		if(act.getDerecho()!=null) {
-			Nodo d;
-			
-			d = reemplazar(n,(Nodo)act.getDerecho(),cambioAltura);
-			
-			act.setDerecho(d);
-			if(cambioAltura.booleanValue())
-				act=equilibrar2(act,cambioAltura);
-		}else {
+	private int altura(Nodo n) {
+		if(n==null)
+			return 0;
+		return 1+Math.max(altura(n.getIzquierdo()),altura(n.getDerecho()));
+	}
 
-			n.setValor(act.getValor());
-			n=act;
-			act=(Nodo)act.getIzquierdo();
-			n=null;
-			cambioAltura.setLogical(true);
-		}
-		return act;
-		
+	private void actualizarFE(Nodo n) {
+		if(n!=null)
+			n.setFe(altura(n.getDerecho())-altura(n.getIzquierdo()));
 	}
-	
+
 	/**
-	 * Equilibrar el arbol
-	 * @param n
-	 * @param cambioAltura
-	 * @return
+	 * Actualiza el factor de equilibrio y aplica la rotación necesaria.
+	 * @param n raiz de la subrama a rebalancear
+	 * @param cambioAltura indica si debe propagarse el cambio de altura
+	 * @return raiz rebalanceada
 	 */
-	private Nodo equilibrar1(Nodo n,Logical cambioAltura)  {
-		Nodo n1;
-		switch(n.getFe()) {
-		case -1:
-			n.setFe(0);
-			break;
-		case 0:
-			n.setFe(1);
-			cambioAltura.setLogical(false);
-			break;
-		case +1:
-			//Se aplica un tipo de rotación derecha
-			n1=(Nodo) n.getDerecho();
-		    if(n1.getFe()>=0) {
-		    	if(n1.getFe()==0)//La altura no vuelve a disminuir
-		    		cambioAltura.setLogical(false);
-		    	n=rotacionDD(n,n1);
-		    }
-		    else
-		    	n=rotacionDI(n,n1);
-		    break;
-			
-		}
-		return n;
-		
-	}
-	
-	/**
-	 * Equilibrar el arbol
-	 * @param n
-	 * @return
-	 */
-	
-	private Nodo equilibrar2(Nodo n, Logical cambioAltura) {
-		Nodo n1;
-		switch(n.getFe()) {
-		case -1:
-			//Se aplica rotacion izquierda
-			n1 = (Nodo) n.getIzquierdo();
-			if(n1.getFe()<=0) {
-				if(n1.getFe()==0)
-					cambioAltura.setLogical(false);
-				n=rotacionDD(n,n1);
-			}
+	private Nodo rebalancearAVL(Nodo n, Logical cambioAltura) {
+		actualizarFE(n);
+
+		if(n.getFe()>1) {
+			Nodo derecho=n.getDerecho();
+			actualizarFE(derecho);
+			if(derecho!=null && derecho.getFe()<0)
+				n=rotacionDI(n,derecho);
 			else
-				n=rotacionID(n,n1);
-			
-			break;
-		case 0:
-			n.setFe(-1);
-			cambioAltura.setLogical(false);
-			break;
-		case +1:
-			n.setFe(0);
-		    break;
-			
+				n=rotacionDD(n,derecho);
 		}
+		else if(n.getFe()<-1) {
+			Nodo izquierdo=n.getIzquierdo();
+			actualizarFE(izquierdo);
+			if(izquierdo!=null && izquierdo.getFe()>0)
+				n=rotacionID(n,izquierdo);
+			else
+				n=rotacionII(n,izquierdo);
+		}
+
+		actualizarFE(n);
+		actualizarFE(n.getIzquierdo());
+		actualizarFE(n.getDerecho());
+		cambioAltura.setLogical(true);
 		return n;
-		
 	}
     
 
     //Recorrido Iterativo en Preorden, utilizando una pila
     public void preordenIterativo(){
+		if (raiz == null) {
+            return;
+        }
         Pila<Nodo> pila = new Pila<Nodo>();
         pila.apilar(raiz);
         while (!pila.esVacia()){
@@ -577,6 +468,9 @@ import cola.Cola;
 
     //Recorrido  Iterativo en InOrden, utilizando una pila
     public void inordenIterativo(){
+		if (raiz == null) {
+            return;
+        }
         Pila<Nodo> pila = new Pila<Nodo>();
         pila.apilar(raiz);
         Nodo aux = raiz.getIzquierdo();
@@ -596,6 +490,9 @@ import cola.Cola;
 
     //Recorrido Iterativo en PostOrden, utilizando una pila
     public void postordenIterativo(){
+        if (raiz == null) {
+            return;
+        }
         Pila<Nodo> pila = new Pila<Nodo>();
         Nodo aux = raiz;
         Nodo q = raiz;
@@ -619,6 +516,9 @@ import cola.Cola;
         }
     }
     public void recorridoPorNivel(){
+		if (raiz == null) {
+            return;
+        }
         Cola<Nodo> cola = new Cola<Nodo>();
         cola.encolar(raiz);
         while(!cola.esVacia()){
