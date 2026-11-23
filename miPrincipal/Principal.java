@@ -97,12 +97,37 @@ public class Principal {
         }else{
             System.out.println("\nEncontrado el dato:"+aux.getValor());
         }
+        //imprimir el arbol
+        System.out.println();
+        BTreePrinter.printNode(arbolEnteros.getRaiz());
+        System.out.println();
         //Eliminamos
+        arbolEnteros.eliminar(new Entero(2));//Elimina un Nodo con hijo izquiero.
+        //imprimir el arbol
+        System.out.println();
+        BTreePrinter.printNode(arbolEnteros.getRaiz());
+        System.out.println();
+        try{
+            arbolEnteros.eliminar(new Entero(30));//hoja
 
+        }catch( Exception e){
+            System.out.println(e.getMessage());
+        }
+         //imprimir el arbol
+        System.out.println();
+        BTreePrinter.printNode(arbolEnteros.getRaiz());
+        System.out.println();
+        try{
+            arbolEnteros.eliminar(new Entero(10));//tiene hijo izquierdo y derecho
 
-
+        }catch( Exception  e){
+            System.out.println(e.getMessage());
+        }
+         //imprimir el arbol
+        System.out.println();
+        BTreePrinter.printNode(arbolEnteros.getRaiz());
+        System.out.println();
         /* 
-
         // Arbol ordenado de estudiantes por codigo.
         Estudiante est3 = new Estudiante(789, "Carlos");
         Estudiante est4 = new Estudiante(45, "Diana");
@@ -129,8 +154,5 @@ public class Principal {
         */
     }
 
-    private static Object Entero(int i) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'Entero'");
-    }
+    
 }
