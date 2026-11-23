@@ -20,17 +20,6 @@ import java.util.Set;
 class AppTest {
 
     @Test
-    void insercionMantieneArbolAVLBalanceado() throws Exception {
-        ArbolAVL arbol = new ArbolAVL();
-
-        for (int i = 1; i <= 100; i++) {
-            arbol.insertar(new Entero(i));
-        }
-
-        assertVerificaAVL(arbol.getRaiz());
-    }
-
-    @Test
     void eliminacionesAleatoriasNoCorrompenElArbol() throws Exception {
         for (int tamanio = 1; tamanio <= 100; tamanio++) {
             ArbolAVL arbol = new ArbolAVL();
@@ -56,48 +45,32 @@ class AppTest {
     }
 
     @Test
-    void insertarMantieneLaPropiedadAVL() throws Exception {
+    void operacionesBasicasDelArbolAVL() throws Exception {
         ArbolAVL arbol = new ArbolAVL();
-
-        arbol.insertar(new Entero(10));
-        arbol.insertar(new Entero(5));
-        arbol.insertar(new Entero(15));
-
+        for (int i = 1; i <= 100; i++) {
+            arbol.insertar(new Entero(i));
+        }
+        assertVerificaAVL(arbol.getRaiz());
         assertNotNull(arbol.buscar(new Entero(5)));
         assertNotNull(arbol.buscar2(new Entero(15)));
-        assertVerificaAVL(arbol.getRaiz());
-    }
+        assertNull(arbol.buscar(new Entero(101)));
 
-    @Test
-    void preorden2DevuelveTodosLosNodosEnPreorden() throws Exception {
-        ArbolAVL arbol = new ArbolAVL();
-        arbol.insertar(new Entero(2));
-        arbol.insertar(new Entero(1));
-        arbol.insertar(new Entero(3));
+        ArbolAVL pequeno = new ArbolAVL();
+        pequeno.insertar(new Entero(2));
+        pequeno.insertar(new Entero(1));
+        pequeno.insertar(new Entero(3));
+        assertVerificaAVL(pequeno.getRaiz());
+        assertEquals("Entero [dato=2],Entero [dato=1],Entero [dato=3],", pequeno.preorden2());
 
-        assertEquals(
-            "Entero [dato=2],Entero [dato=1],Entero [dato=3],",
-            arbol.preorden2()
-        );
-    }
-
-    @Test
-    void recorridosSobreArbolVacioNoLanzanExcepcion() {
-        ArbolAVL arbol = new ArbolAVL();
-
-        assertDoesNotThrow(arbol::preorden);
-        assertDoesNotThrow(arbol::inorden);
-        assertDoesNotThrow(arbol::postorden);
-        assertDoesNotThrow(arbol::preordenIterativo);
-        assertDoesNotThrow(arbol::inordenIterativo);
-        assertDoesNotThrow(arbol::postordenIterativo);
-        assertDoesNotThrow(arbol::recorridoPorNivel);
-        assertEquals("", arbol.preorden2());
-    }
-
-    @Test
-    void rechazaTiposQueNoImplementanComparable() {
-        ArbolAVL arbol = new ArbolAVL();
+        ArbolAVL vacio = new ArbolAVL();
+        assertDoesNotThrow(vacio::preorden);
+        assertDoesNotThrow(vacio::inorden);
+        assertDoesNotThrow(vacio::postorden);
+        assertDoesNotThrow(vacio::preordenIterativo);
+        assertDoesNotThrow(vacio::inordenIterativo);
+        assertDoesNotThrow(vacio::postordenIterativo);
+        assertDoesNotThrow(vacio::recorridoPorNivel);
+        assertEquals("", vacio.preorden2());
 
         assertThrows(Exception.class, () -> arbol.insertar("texto"));
         assertThrows(Exception.class, () -> arbol.eliminar("texto"));
@@ -106,35 +79,40 @@ class AppTest {
     }
 
     @Test
-    void insertaValoresYLosEncuentraConAmbasBusquedas() throws Exception {
+    void operacionesBasicasDelArbolBinario() throws Exception {
         ArbolBinarioBusqueda arbol = crearArbolBinario();
-
         assertEquals(8, datoBinario(arbol.buscar(entero(8))));
         assertEquals(4, datoBinario(arbol.buscar2(entero(4))));
         assertEquals(14, datoBinario(arbol.buscar(entero(14))));
         assertNull(arbol.buscar(entero(99)));
         assertNull(arbol.buscar2(entero(99)));
-    }
 
-    @Test
-    void rechazaValoresDuplicadosEnAmbasInserciones() throws Exception {
         ArbolBinarioBusqueda iterativo = new ArbolBinarioBusqueda();
         iterativo.insertar(entero(8));
         assertThrows(Exception.class, () -> iterativo.insertar(entero(8)));
-
         ArbolBinarioBusqueda recursivo = new ArbolBinarioBusqueda();
         recursivo.insertar2(entero(8));
         assertThrows(Exception.class, () -> recursivo.insertar2(entero(8)));
+
+        ArbolBinarioBusqueda vacio = new ArbolBinarioBusqueda();
+        assertNull(vacio.buscar(entero(1)));
+        assertNull(vacio.buscar2(entero(1)));
+        assertFalse(vacio.eliminar(entero(1)));
+        assertEquals("", salidaDe(vacio::preorden));
+        assertEquals("", salidaDe(vacio::inorden));
+        assertEquals("", salidaDe(vacio::postorden));
+        assertEquals("", salidaDe(vacio::preordenIterativo));
+        assertEquals("", salidaDe(vacio::inordenIterativo));
+        assertEquals("", salidaDe(vacio::postordenIterativo));
+        assertEquals("", salidaDe(vacio::recorridoPorNiveles));
     }
 
     @Test
     void recorridosDelArbolBinarioMuestranElOrdenCorrecto() throws Exception {
         ArbolBinarioBusqueda arbol = crearArbolBinario();
-
         assertEquals(salidaEsperada(8, 4, 2, 6, 12, 10, 14), salidaDe(arbol::preorden));
         assertEquals(salidaEsperada(2, 4, 6, 8, 10, 12, 14), salidaDe(arbol::inorden));
         assertEquals(salidaEsperada(2, 6, 4, 10, 14, 12, 8), salidaDe(arbol::postorden));
-
         assertEquals(salidaEsperada(8, 4, 2, 6, 12, 10, 14), salidaDe(arbol::preordenIterativo));
         assertEquals(salidaEsperada(2, 4, 6, 8, 10, 12, 14), salidaDe(arbol::inordenIterativo));
         assertEquals(salidaEsperada(2, 6, 4, 10, 14, 12, 8), salidaDe(arbol::postordenIterativo));
@@ -142,87 +120,46 @@ class AppTest {
     }
 
     @Test
-    void eliminarHojaDesconectaSoloEseNodo() throws Exception {
+    void eliminacionesDelArbolBinario() throws Exception {
         ArbolBinarioBusqueda arbol = crearArbolBinario();
-
         assertTrue(arbol.eliminar(entero(2)));
-
         assertNull(arbol.buscar(entero(2)));
         assertEquals(salidaEsperada(4, 6, 8, 10, 12, 14), salidaDe(arbol::inorden));
-    }
 
-    @Test
-    void eliminarNodoConUnHijoConectaSuHijoConElPadre() throws Exception {
-        ArbolBinarioBusqueda arbol = new ArbolBinarioBusqueda();
+        arbol = new ArbolBinarioBusqueda();
         arbol.insertar(entero(8));
         arbol.insertar(entero(4));
         arbol.insertar(entero(12));
         arbol.insertar(entero(10));
-
         assertTrue(arbol.eliminar(entero(12)));
-
         assertNull(arbol.buscar(entero(12)));
         assertEquals(10, datoBinario(arbol.getRaiz().getDerecho()));
         assertEquals(salidaEsperada(4, 8, 10), salidaDe(arbol::inorden));
-    }
 
-    @Test
-    void eliminarRaizConDosHijosConservaElOrdenDelArbol() throws Exception {
-        ArbolBinarioBusqueda arbol = crearArbolBinario();
-
+        arbol = crearArbolBinario();
         assertTrue(arbol.eliminar(entero(8)));
-
         assertNull(arbol.buscar(entero(8)));
         assertEquals(salidaEsperada(2, 4, 6, 10, 12, 14), salidaDe(arbol::inorden));
         assertEquals(6, datoBinario(arbol.getRaiz()));
-    }
 
-    @Test
-    void eliminarRaizConUnSoloHijoPromueveEseHijo() throws Exception {
-        ArbolBinarioBusqueda arbol = new ArbolBinarioBusqueda();
+        arbol = new ArbolBinarioBusqueda();
         arbol.insertar(entero(8));
         arbol.insertar(entero(4));
-
         assertTrue(arbol.eliminar(entero(8)));
-
         assertEquals(4, datoBinario(arbol.getRaiz()));
         assertNull(arbol.getRaiz().getIzquierdo());
         assertNull(arbol.getRaiz().getDerecho());
-    }
 
-    @Test
-    void eliminarValorInexistenteDevuelveFalseSinCambiarElArbol() throws Exception {
-        ArbolBinarioBusqueda arbol = crearArbolBinario();
-
+        arbol = crearArbolBinario();
         assertFalse(arbol.eliminar(entero(99)));
         assertEquals(salidaEsperada(2, 4, 6, 8, 10, 12, 14), salidaDe(arbol::inorden));
     }
 
-    @Test
-    void operacionesYRecorridosDelArbolBinarioVacioFuncionan() {
-        ArbolBinarioBusqueda arbol = new ArbolBinarioBusqueda();
-
-        assertNull(arbol.buscar(entero(1)));
-        assertNull(arbol.buscar2(entero(1)));
-        assertFalse(arbol.eliminar(entero(1)));
-        assertEquals("", salidaDe(arbol::preorden));
-        assertEquals("", salidaDe(arbol::inorden));
-        assertEquals("", salidaDe(arbol::postorden));
-        assertEquals("", salidaDe(arbol::preordenIterativo));
-        assertEquals("", salidaDe(arbol::inordenIterativo));
-        assertEquals("", salidaDe(arbol::postordenIterativo));
-        assertEquals("", salidaDe(arbol::recorridoPorNiveles));
-    }
-
     private static ArbolBinarioBusqueda crearArbolBinario() throws Exception {
         ArbolBinarioBusqueda arbol = new ArbolBinarioBusqueda();
-        arbol.insertar(entero(8));
-        arbol.insertar(entero(4));
-        arbol.insertar(entero(12));
-        arbol.insertar(entero(2));
-        arbol.insertar(entero(6));
-        arbol.insertar(entero(10));
-        arbol.insertar(entero(14));
+        for (int valor : new int[]{8, 4, 12, 2, 6, 10, 14}) {
+            arbol.insertar(entero(valor));
+        }
         return arbol;
     }
 
@@ -268,21 +205,11 @@ class AppTest {
             visitados.add(nodo),
             "El árbol contiene una referencia circular"
         );
-
         int alturaIzquierda = assertVerificaAVL(nodo.getIzquierdo(), visitados);
         int alturaDerecha = assertVerificaAVL(nodo.getDerecho(), visitados);
         int factorCalculado = alturaDerecha - alturaIzquierda;
-
-        assertTrue(
-            Math.abs(factorCalculado) <= 1,
-            "Nodo desbalanceado: " + nodo.getValor()
-        );
-        assertEquals(
-            factorCalculado,
-            nodo.getFe(),
-            "Factor de equilibrio incorrecto en: " + nodo.getValor()
-        );
-
+        assertTrue(Math.abs(factorCalculado) <= 1, "Nodo desbalanceado: " + nodo.getValor());
+        assertEquals(factorCalculado, nodo.getFe(), "Factor de equilibrio incorrecto en: " + nodo.getValor());
         visitados.remove(nodo);
         return 1 + Math.max(alturaIzquierda, alturaDerecha);
     }

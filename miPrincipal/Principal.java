@@ -50,6 +50,58 @@ public class Principal {
         if(e1.esMenor(e2)){
             System.out.println(e1+" es menor que "+e2);
         }
+        //Arbol ordenado de enteros.
+        ArbolBinarioBusqueda arbolEnteros = new ArbolBinarioBusqueda();
+        try{
+            //Agregar los datos al arbol binario ordenado 
+            //version iterativa
+            System.out.println("Insertando alguos elementos:");
+            arbolEnteros.insertar(new Entero(10));
+            arbolEnteros.insertar(new Entero(15));
+            arbolEnteros.insertar(new Entero(30));
+            arbolEnteros.insertar(new Entero(5));
+            arbolEnteros.insertar(new Entero(2));
+            arbolEnteros.insertar(new Entero(1));
+            //version recursiva
+            arbolEnteros.insertar2(new Entero(12));
+        }catch(Exception e){
+            System.out.println("Error!"+e.getMessage());
+        }
+        //Recorrido del arbol de Enteros
+        System.out.println("Recorrido Recursivo:");
+        System.out.println("Preorden:");
+        arbolEnteros.preorden();
+        System.out.println("\nInorden:");
+        arbolEnteros.inorden();
+        System.out.println("\nPostOrden:");
+        arbolEnteros.postorden();
+
+        //busquedas iterativas
+        Nodo aux = arbolEnteros.buscar(new Entero(30));
+        if(aux ==null){
+            System.out.println("\nDato no encontrado");
+        }else{
+            System.out.println("\nEncontrado el dato:"+aux.getValor());
+        }
+        //busquedaa Recursiva
+        aux = arbolEnteros.buscar2(new Entero(15));
+         if(aux ==null){
+            System.out.println("\nDato no encontrado");
+        }else{
+            System.out.println("\nEncontrado el dato:"+aux.getValor());
+        }
+        //busqueda no encotrada
+        aux = arbolEnteros.buscar2(new Entero(50));
+         if(aux ==null){
+            System.out.println("\nDato no encontrado");
+        }else{
+            System.out.println("\nEncontrado el dato:"+aux.getValor());
+        }
+        //Eliminamos
+
+
+
+        /* 
 
         // Arbol ordenado de estudiantes por codigo.
         Estudiante est3 = new Estudiante(789, "Carlos");
@@ -74,5 +126,11 @@ public class Principal {
         System.out.println();
         System.out.println("Arbol ordenado de estudiantes:");
         BTreePrinter.printNode(arbolOrdenado.getRaiz());
+        */
+    }
+
+    private static Object Entero(int i) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'Entero'");
     }
 }
