@@ -244,9 +244,15 @@ public class ArbolAVL {
 				r.setDerecho(eliminarAVL(r.getDerecho(),sucesor.getValor(),cambioAltura));
 			}
 		}
-		return r==null ? null : rebalancearAVL(r,cambioAltura);
+		//return r==null ? null : rebalancearAVL(r,cambioAltura);
+        if (r==null){
+            return null;
+        }else{
+            rebalancearAVL(r,cambioAltura);
+        }
+        
 	
     }
-    
+
 
 }
