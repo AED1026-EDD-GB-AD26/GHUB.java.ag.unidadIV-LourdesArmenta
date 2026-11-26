@@ -195,5 +195,58 @@ public class ArbolAVL {
             throw new Exception("Nodo Duplicado");
         return raiz;
     }
+    /**
+     * Eliminar un nodo de un arbol AVL
+     * @param valor valor a eliminar
+     * @throws Exception
+     */
+    public void eliminar(Object valor) throws Exception{
+        Comparable dato;
+        dato = (Comparable)valor;
+        Logical flag = new Logical(false);
+        raiz = eliminarAVL(raiz,dato,flag);
+    }
+    /**
+     * Método recursivo para eliminar un nodo
+     * @param r nodo raiz
+     * @param clave elemento clave a borrar
+     * @param cambioAltura tipo LOgical
+     * @return
+     * @throws Exception
+     */
+    private Nodo eliminarAVL(Nodo r, Comparable clave, Logical cambioAltura) throws Exception{
+        if(r==null) {
+			throw new Exception("Nodo no encontrado");
+		}
+		else if(clave.esMenor(r.getValor())) {
+			Nodo iz = eliminarAVL(r.getIzquierdo(),clave,cambioAltura);
+			r.setIzquierdo(iz);
+		}
+		else if(clave.esMayor(r.getValor())) {
+			Nodo dr = eliminarAVL(r.getDerecho(),clave,cambioAltura);
+			r.setDerecho(dr);
+		}
+		else //Nodo encontrado
+		{
+			if(r.getIzquierdo()==null) {
+				r=r.getDerecho();
+				cambioAltura.setLogical(true);
+			}
+			else if(r.getDerecho()==null) {
+				r=r.getIzquierdo();
+				cambioAltura.setLogical(true);
+			}
+			else {
+				Nodo sucesor = r.getDerecho();
+				while(sucesor.getIzquierdo()!=null)
+					sucesor=sucesor.getIzquierdo();
+				r.setValor(sucesor.getValor());
+				r.setDerecho(eliminarAVL(r.getDerecho(),sucesor.getValor(),cambioAltura));
+			}
+		}
+		return r==null ? null : rebalancearAVL(r,cambioAltura);
+	
+    }
+    
 
 }
