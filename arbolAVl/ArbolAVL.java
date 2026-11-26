@@ -7,7 +7,6 @@ public class ArbolAVL {
     public ArbolAVL() {
         raiz = null;
     }
-    //ROTACIONES
     /**
 	 * ROTACIONES
 	 * @param n
