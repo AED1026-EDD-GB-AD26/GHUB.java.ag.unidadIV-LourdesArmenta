@@ -250,9 +250,41 @@ public class ArbolAVL {
         }else{
             rebalancearAVL(r,cambioAltura);
         }
-        
-	
     }
+
+    /**
+	 * Actualiza el factor de equilibrio y aplica la rotación necesaria.
+	 * @param n raiz de la subrama a rebalancear
+	 * @param cambioAltura indica si debe propagarse el cambio de altura
+	 * @return raiz rebalanceada
+	 */
+	private Nodo rebalancearAVL(Nodo n, Logical cambioAltura) {
+		actualizarFE(n);
+
+		if(n.getFe()>1) {
+			Nodo derecho=n.getDerecho();
+			actualizarFE(derecho);
+			if(derecho!=null && derecho.getFe()<0)
+				n=rotacionDI(n,derecho);
+			else
+				n=rotacionDD(n,derecho);
+		}
+		else if(n.getFe()<-1) {
+			Nodo izquierdo=n.getIzquierdo();
+			actualizarFE(izquierdo);
+			if(izquierdo!=null && izquierdo.getFe()>0)
+				n=rotacionID(n,izquierdo);
+			else
+				n=rotacionII(n,izquierdo);
+		}
+
+		actualizarFE(n);
+		actualizarFE(n.getIzquierdo());
+		actualizarFE(n.getDerecho());
+		cambioAltura.setLogical(true);
+		return n;
+	}
+
 
 
 }
