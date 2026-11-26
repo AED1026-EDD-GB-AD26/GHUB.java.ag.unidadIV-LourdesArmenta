@@ -242,13 +242,14 @@ public class ArbolAVL {
 					sucesor=sucesor.getIzquierdo();
 				r.setValor(sucesor.getValor());
 				r.setDerecho(eliminarAVL(r.getDerecho(),sucesor.getValor(),cambioAltura));
+                //r.setDerecho(eliminarAVL(r.getDerecho(), (Comparable) sucesor.getValor(), cambioAltura));
 			}
 		}
 		//return r==null ? null : rebalancearAVL(r,cambioAltura);
         if (r==null){
             return null;
         }else{
-            rebalancearAVL(r,cambioAltura);
+           return  rebalancearAVL(r,cambioAltura); //AQUI HABIA UN ERROR
         }
     }
 
