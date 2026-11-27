@@ -9,6 +9,10 @@ public class AppDemTreeSet {
         t.add(3);
         t.add(9);
         t.add(2);
+        boolean v = t.contains(5);
+        if (v){
+            System.out.println("el valor 5 existe");
+        }
         System.out.println(t.contains(5));
         System.out.println(t.contains(12));
         System.out.println();
