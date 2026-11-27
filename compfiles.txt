@@ -12,6 +12,7 @@
 ./arbolAVl/Entero.java
 ./arbolAVl/Nodo.java
 ./arbolAVl/Logical.java
+./arbolAVl/BTreePrinter.java
 ./arbolAVl/Comparable.java
 ./arbolAVl/ArbolAVL.java
 ./miPrincipal/AppArbolAVL.java

@@ -5,6 +5,7 @@ import arbolBinario.BTreePrinter;
 import arbolBinario.Nodo;
 import arbolBinario.Estudiante;
 import arbolBinario.Entero;
+import arbolAVL.ArbolAVL;
 
 public class Principal {
     
@@ -152,6 +153,45 @@ public class Principal {
         System.out.println("Arbol ordenado de estudiantes:");
         BTreePrinter.printNode(arbolOrdenado.getRaiz());
         */
+       //DEMOSTRAR EL USO DE UN ARBOL BINARIO BALANCEADAO
+       ArbolAVL abb = new ArbolAVL();
+       try{
+            //Agregar los datos al arbol binario balanceado
+            //version iterativa
+            System.out.println("Insertando alguos elementos:");
+            abb.insertar(new arbolAVL.Entero(10));
+            abb.insertar(new arbolAVL.Entero(15));
+            abb.insertar(new arbolAVL.Entero(30));
+            abb.insertar(new arbolAVL.Entero(5));
+            abb.insertar(new arbolAVL.Entero(2));
+            abb.insertar(new arbolAVL.Entero(1));
+            //version recursiva
+            abb.insertar(new arbolAVL.Entero(12));
+        }catch(Exception e){
+            System.out.println("Error!"+e.getMessage());
+        }
+        //imprimir el arbol
+        System.out.println();
+        arbolAVL.BTreePrinter.printNode(abb.getRaiz());
+        
+        System.out.println();
+        try{
+             abb.insertar(new arbolAVL.Entero(13));
+
+        }catch(Exception ex){
+            System.out.println(ex.getMessage());
+        }
+        //imprimir el arbol
+        System.out.println("Imprimimos el arbol, después de la inserción:");
+        System.out.println();
+        arbolAVL.BTreePrinter.printNode(abb.getRaiz());
+        //elminamos un nodo
+        abb.eliminar(new arbolAVL.Entero(1));
+        System.out.println("Imprimimos el arbol, después de la eliminacion:");
+        System.out.println();
+        arbolAVL.BTreePrinter.printNode(abb.getRaiz());
+
+       
     }
 
     

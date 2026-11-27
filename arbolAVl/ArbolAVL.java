@@ -8,6 +8,10 @@ public class ArbolAVL {
     public ArbolAVL() {
         raiz = null;
     }
+    //getter
+    public Nodo getRaiz(){
+        return raiz;
+    }
 
     /**
      * ROTACIONES
@@ -285,6 +289,7 @@ public class ArbolAVL {
 		cambioAltura.setLogical(true);
 		return n;
 	}
+
     private int altura(Nodo n) {
 		if(n==null)
 			return 0;
