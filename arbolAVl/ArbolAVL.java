@@ -241,8 +241,8 @@ public class ArbolAVL {
 				while(sucesor.getIzquierdo()!=null)
 					sucesor=sucesor.getIzquierdo();
 				r.setValor(sucesor.getValor());
-				r.setDerecho(eliminarAVL(r.getDerecho(),sucesor.getValor(),cambioAltura));
-                //r.setDerecho(eliminarAVL(r.getDerecho(), (Comparable) sucesor.getValor(), cambioAltura));
+			    //r.setDerecho(eliminarAVL(r.getDerecho(),sucesor.getValor(),cambioAltura));
+                r.setDerecho(eliminarAVL(r.getDerecho(), (Comparable) sucesor.getValor(), cambioAltura));
 			}
 		}
 		//return r==null ? null : rebalancearAVL(r,cambioAltura);
@@ -285,6 +285,16 @@ public class ArbolAVL {
 		cambioAltura.setLogical(true);
 		return n;
 	}
+    private int altura(Nodo n) {
+		if(n==null)
+			return 0;
+		return 1+Math.max(altura(n.getIzquierdo()),altura(n.getDerecho()));
+	}
+    private void actualizarFE(Nodo n) {
+		if(n!=null)
+			n.setFe(altura(n.getDerecho())-altura(n.getIzquierdo()));
+	}
+
 
 
 
